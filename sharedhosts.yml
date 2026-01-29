@@ -1,0 +1,14 @@
+---
+- name: Manage shared /etc/hosts entries
+  hosts: servers
+  become: true
+
+  tasks:
+    - name: Ensure shared hosts entries exist (excluding control vm1)
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        marker: "# {mark} ANSIBLE MANAGED HOSTS"
+        block: |
+          172.20.10.12 vm2 client1
+          172.20.10.13 vm3 client2
+          172.20.10.2  vm4 client3

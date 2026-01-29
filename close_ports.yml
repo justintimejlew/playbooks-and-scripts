@@ -1,0 +1,19 @@
+---
+- name: Close port 80 and 443
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Close port 80
+      ansible.builtin.firewalld:
+        port: 80/tcp
+        state: disabled
+        permanent: true
+        immediate: true
+      
+
+    - name: Close port 443
+      ansible.builtin.firewalld:
+        port: 443/tcp
+        state: disabled
+        permanent: true
+        immediate: true

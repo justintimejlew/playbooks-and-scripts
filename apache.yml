@@ -1,0 +1,17 @@
+---
+- hosts: servers
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  become: true
+  tasks:
+    - name: Latest Apache version installed
+      yum:
+        name: httpd
+        state: latest
+    - name: Apache enabled and running
+      service:
+        name: httpd
+        enabled: true
+        state: started

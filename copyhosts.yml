@@ -1,0 +1,10 @@
+---
+- name: Update /etc/hosts file with correct IP addresses
+  hosts: servers
+  become: true
+  tasks:
+    - name: Copy the control node hosts files
+      ansible.builtin.copy:
+        src: /etc/hosts
+        dest: /etc/hosts
+        mode: '0644'

@@ -1,0 +1,20 @@
+---
+- name:   Update the system inventory database
+  hosts:  servers
+  become: yes
+
+  tasks:
+    - name: Install git command
+      ansible.builtin.dnf:
+        name:   git
+        state:  present
+#    - name: Download the script repository from GitLab
+#      ansible.builtin.git:
+#        repo:           "https://{{ git_user }}:{{ git_token }}@gitlab.com/procoreplusmd/scripts.git"
+#        dest:           ~/scripts
+#        clone:          yes
+#        accept_hostkey: yes
+#    - name: Run host_fact.sh script file
+#      ansible.builtin.shell: ~/scripts/host_fact.sh_DoNotDelete
+#      args:
+#        chdir:      ~

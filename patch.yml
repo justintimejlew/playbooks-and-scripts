@@ -1,0 +1,18 @@
+---
+- name: Patch Dev Servers
+  hosts: servers
+  become: true
+  become_method: sudo
+  gather_facts: true
+  tasks:
+    - name: yum update all
+      dnf:
+        name: '*'
+        exclude:
+          - libcurl-*
+        state: latest
+        skip_broken: true
+        lock_timeout: 3600
+        update_only: true
+
+#      - debug: var=out

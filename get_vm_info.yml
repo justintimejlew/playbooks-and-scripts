@@ -1,0 +1,14 @@
+# This playbook gets the information on each VM in order to run a script in the /tmp directory
+---
+- name: Get VM information for each server using a script
+  hosts: servers
+  become: yes
+  tasks:
+    - name: Copy the script as /tmp/serverinfo.info
+      ansible.builtin.copy:
+        src: serverinfo.sh
+        dest: /tmp/serverinfo.info
+        mode: '0755'
+
+    - name: Execute the script
+      ansible.builtin.command: /tmp/serverinfo.info

@@ -1,0 +1,13 @@
+---
+- name:   User creation
+  hosts:  servers
+  become: yes
+  tasks:
+    - name: Create local user tfleming
+      ansible.builtin.user:
+        name: tfleming
+        state: present
+
+    - name: Expire tfleming password
+      ansible.builtin.command:
+        cmd: chage -d 0 tfleming
