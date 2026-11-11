@@ -1,18 +1,27 @@
 ---
-- name: Patch Dev Servers
-  hosts: servers
+- name: Patch the cluster servers
+  hosts: cluster
   become: true
-  become_method: sudo
-  gather_facts: true
+  serial: 1
   tasks:
-    - name: yum update all
-      dnf:
-        name: '*'
+    - name: Run dnf to update all servers
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_only: true
+        skip_broken: true
         exclude:
           - libcurl-*
-        state: latest
-        skip_broken: true
-        lock_timeout: 3600
-        update_only: true
+        lock_timeout: 300
 
-#      - debug: var=out
+    - name: Check if reboot is needed
+      ansible.builtin.command: dnf needs-restarting -r
+      register: reboot_check
+      changed_when: reboot_check.rc == 1
+      failed_when: reboot_check.rc not in [0, 1]
+
+    - name: Reboot if needed
+      ansible.builtin.reboot:
+      when:
+        - reboot_check.rc == 1
+        - inventory_hostname != 't480'
